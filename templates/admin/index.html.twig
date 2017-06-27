@@ -1,0 +1,66 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+    <div class="container">
+        <form class="form-horizontal" method="post" action="{{ path('logout_user') }}">
+            <div style="margin-top:10px" class="form-group">
+                <!-- Button -->
+
+                <div class="col-sm-12 controls">
+                    <button type="submit" class="btn btn-info">Logout</button>
+                </div>
+            </div>
+        </form>
+
+        <form class="form-horizontal" method="post" action="{{ path('create_event') }}">
+            <table>
+                <tr>
+                    <td><label for="event-description">Description:</label></td>
+                    <td><input type="text" class="text-center" name="event[description]" id="event-description"></td>
+                </tr>
+                <tr style="height: 10px"></tr>
+                <tr>
+                    <td><label for="event-time">Time</label></td>
+                    <td><input class="timepicker text-center"
+                               name="event[time]"
+                               id="event-time"
+                        ></td>
+                </tr>
+                <tr style="height: 10px"></tr>
+                <tr>
+                    <td> <label for="event-date">Date</label></td>
+                    <td><input class="datepicker text-center"
+                               name="event[date]"
+                               id="event-date"
+                        ></td>
+                </tr>
+            </table>
+            <div class="form-group">
+                <div class="col-sm-12 controls">
+                    <button type="submit" class="btn btn-success">Submit</button>
+                </div>
+            </div>
+        </form>
+
+        <a href="{{ path('list_events') }}" class="btn btn-default">View events</a>
+    </div>
+
+
+    <script>
+        $(document).ready(function () {
+            $('.timepicker').timepicker({
+                timeFormat: 'HH:mm:ss',
+                interval: 30,
+                defaultTime: '11',
+                dynamic: false,
+                dropdown: true,
+                scrollbar: true,
+                pick12HourFormat: false
+            });
+
+            $( ".datepicker" ).datepicker({
+                dateFormat: 'yy-mm-dd'
+            });
+        })
+    </script>
+{% endblock %}

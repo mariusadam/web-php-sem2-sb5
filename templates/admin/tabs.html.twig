@@ -1,0 +1,67 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+    <div class="container">
+        <a href="{{ path('admin_page') }}" class="btn btn-default">Admin page</a>
+        <br/>
+        <br/>
+        <ul class="nav nav-tabs">
+            {% for tab in tabs %}
+                <li class="{{ tab.active }}"><a data-toggle="tab"
+                                                data-event-date="{{ tab.date }}"
+                                                class="event-load-locator"
+                                                href="#tab-{{ tab.date }}">{{ tab.date }}</a></li>
+            {% endfor %}
+        </ul>
+
+        {#<ul class="nav nav-tabs">#}
+        {#<li class="active"><a data-toggle="tab" href="#list">Teams list</a></li>#}
+        {#<li><a data-toggle="tab" href="#new">Add new team</a></li>#}
+        {#</ul>#}
+
+        <div class="tab-content">
+            {% for tab in tabs %}
+                <div id="tab-{{ tab.date }}" class="tab-pane fade in {{ tab.active }}">
+                    <h3>{{ tab.date }}</h3>
+                    <ul id="event-wrapper-{{ tab.date }}">
+                        {% for event in tab.events %}
+                            <li>
+                                #{{ event.id }} |
+                                {{ event.date }} |
+                                {{ event.description }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
+    <script>
+        var eventsCached = {};
+
+        $(document).ready(function () {
+            $('.event-load-locator').click(function (e) {
+                var date = $(this).attr('data-event-date');
+                if (!eventsCached.hasOwnProperty(date)) {
+                    $.ajax({
+                        url: '/events/for/' + date,
+                        type: 'GET',
+                        success: function (data) {
+                            var $eventsWrapper = $('#event-wrapper-' + date);
+                            $eventsWrapper.empty();
+                            for (var i = 0; i < data.events.length; i++) {
+                                var event = data.events[i];
+                                $eventsWrapper.append(
+                                    $('<li>').html('#' + event.id + ' | ' + event.date + ' | ' + event.description)
+                                );
+                            }
+                            eventsCached[date] = true;
+                            console.log(data);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+{% endblock %}

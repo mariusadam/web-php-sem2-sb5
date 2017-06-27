@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block title '' %} - My Silex Application</title>
+
+        <link href="{{ asset('css/main.css') }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ asset('bootstrap-3.3.7-dist/css/bootstrap.css') }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ asset('js/jquery.timepicker.css') }}" rel="stylesheet" type="text/css"/>
+        <script src="{{ asset('js/jquery-3.2.1.js') }}"></script>
+        <script src="{{ asset('js/jquery.timepicker.js') }}"></script>
+        <script src="{{ asset('js/ajax.js') }}"></script>
+        <script src="{{ asset('bootstrap-3.3.7-dist/js/bootstrap.js') }}"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+
+        <script type="text/javascript">
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-XXXXXXXX-X']);
+            _gaq.push(['_trackPageview']);
+
+            (function() {
+                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+            })();
+        </script>
+    </head>
+    <body>
+        <div class="container">
+            <div id="notices">
+                {% for message in app.session.getFlashBag.get('error') %}
+                    <div class="alert alert-danger col-sm-12">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                {% for message in app.session.getFlashBag.get('success') %}
+                    <div class="alert alert-success col-sm-12">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% block content %}
+
+        {% endblock %}
+    </body>
+</html>
